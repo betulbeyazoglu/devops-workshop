@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  CF template for Dockerization of Bookstore Web API (Python Flask) with MySQL Project -> 
+  Creates Amazon Linux 2 EC2 instance and downloads Application files from Github
+
+Resources:
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: Enables HTTP and SSH 
+        SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: 80
+              ToPort: 80
+              CidrIp: 0.0.0.0/0
+
+  WebServer:
+      Type: AWS::EC2::Instance
+      Properties:
+        ImageId: ami-0c94855ba95c71c99
+        InstanceType: t2.micro
+        SecurityGroupIds:
+            - !Ref WebServerSecurityGroup
+        Tags:
+            - Key: Name
+              Value: !Sub Web Server of ${AWS::StackName} Stack
+        UserData:
+            Fn::Base64: |
+                #! /bin/bash
+                yum update -y
+                amazon-linux-extras install docker -y
+                systemctl start docker
+                systemctl enable docker
+                usermod -a -G docker ec2-user
+                curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" \
+                -o /usr/local/bin/docker-compose
+                chmod +x /usr/local/bin/docker-compose
+                cd /home/ec2-user/
+                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/Dockerfile
+                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/bookstore-api.py
+                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/docker-compose.yml
+                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/requirements.txt
+                docker-compose up
+
+
+
+Outputs:
+  WebsiteURL:
+    Description: Bookstore Web API URL
+    Value: !Sub
+      - http://${PublicAddress}
+      - PublicAddress: !GetAtt WebServer.PublicDnsName
+
+
+
+      
