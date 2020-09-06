@@ -36,10 +36,7 @@ Resources:
                 -o /usr/local/bin/docker-compose
                 chmod +x /usr/local/bin/docker-compose
                 cd /home/ec2-user/
-                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/Dockerfile
-                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/bookstore-api.py
                 wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/docker-compose.yml
-                wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/requirements.txt
                 docker-compose up
 
 
