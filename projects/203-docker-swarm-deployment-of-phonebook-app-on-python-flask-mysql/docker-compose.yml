@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  website:
+    image: 375516740190.dkr.ecr.us-east-1.amazonaws.com/bb4it/phonebook-app:latest # bb4it/phonebook-api 
+    restart: always
+    depends_on: 
+      - database
+    deploy: 
+      mode: global 
+    ports:
+      - "80:80"
+    networks:
+      - whitenet
+  database:
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    image: mysql:5.7 
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Bbeyaz
+      MYSQL_USER: bb4it
+      MYSQL_PASSWORD: bb4it.me
+      MYSQL_DATABASE: phonebook_db
+    networks:
+      - whitenet
+networks:
+  whitenet:
+    driver: bridge
+volumes:
+  mysql-data:
+ 
+
+
+
+
