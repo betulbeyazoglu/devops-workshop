@@ -64,13 +64,25 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
+        - IpProtocol: TCP
           FromPort: 8080
           ToPort: 8080
           CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
+        - IpProtocol: TCP
           FromPort: 2377
           ToPort: 2377
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: TCP
+          FromPort: 7946
+          ToPort: 7946
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: UDP
+          FromPort: 7946
+          ToPort: 7946
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: UDP
+          FromPort: 4789
+          ToPort: 4789
           CidrIp: 0.0.0.0/0
 
   DockerGrandMaster:
@@ -112,7 +124,7 @@ Resources:
           # mkdir -p /home/ec2-user/.docker
           # cd /home/ec2-user/.docker
           # echo '{"credsStore": "ecr-login"}' > config.json
-          # cd /home/ec2-user/
+          cd /home/ec2-user/
           aws ecr create-repository --repository-name bb4it/phonebook-app --region us-east-1           
           docker build -t 375516740190.dkr.ecr.us-east-1.amazonaws.com/bb4it/phonebook-app:latest https://github.com/betulbeyazoglu/devops-workshop.git#:projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql          
           aws ecr get-login-password \
