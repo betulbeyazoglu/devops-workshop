@@ -27,7 +27,7 @@ services:
       - whitenet
 networks:
   whitenet:
-    driver: bridge
+    driver: overlay
 volumes:
   mysql-data:
  
