@@ -120,22 +120,23 @@ Resources:
           --constraint=node.role==manager \
           --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
           dockersamples/visualizer
-          # yum install amazon-ecr-credential-helper
-          # mkdir -p /home/ec2-user/.docker
-          # cd /home/ec2-user/.docker
-          # echo '{"credsStore": "ecr-login"}' > config.json
+          yum install amazon-ecr-credential-helper
+          mkdir -p /home/ec2-user/.docker
+          cd /home/ec2-user/.docker
+          echo '{"credsStore": "ecr-login"}' > config.json
           cd /home/ec2-user/
           aws ecr create-repository --repository-name bb4it/phonebook-app --region us-east-1           
           docker build -t 375516740190.dkr.ecr.us-east-1.amazonaws.com/bb4it/phonebook-app:latest https://github.com/betulbeyazoglu/devops-workshop.git#:projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql          
-          aws ecr get-login-password \
-          --region us-east-1 \
-          | docker login \
-          --username AWS \
-          --password-stdin 375516740190.dkr.ecr.us-east-1.amazonaws.com
+          # aws ecr get-login-password \
+          # --region us-east-1 \
+          # | docker login \
+          # --username AWS \
+          # --password-stdin 375516740190.dkr.ecr.us-east-1.amazonaws.com
           docker push 375516740190.dkr.ecr.us-east-1.amazonaws.com/bb4it/phonebook-app:latest
           wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql/docker-compose.yml
           mkdir mysql-init && cd mysql-init
           wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql/mysql-init/init.sql                    
+          cd /home/ec2-user/
           docker stack deploy --compose-file docker-compose.yml bb4it
   
   ManagerLaunchTemplate:
