@@ -110,9 +110,9 @@ Resources:
           -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
           yum install git -y 
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          ./aws/install
+          # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          # unzip awscliv2.zip
+          # ./aws/install
           docker swarm init
           docker service create \
           --name=viz \
@@ -206,7 +206,7 @@ Resources:
             mkdir -p /home/ec2-user/.docker
             cd /home/ec2-user/.docker
             echo '{"credsStore": "ecr-login"}' > config.json  
-            
+
   WorkerInstance1:
     Type: "AWS::EC2::Instance"
     Properties:
