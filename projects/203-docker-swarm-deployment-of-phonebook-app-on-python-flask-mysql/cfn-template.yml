@@ -54,7 +54,7 @@ Resources:
   DockerMachinesSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
-      GroupDescription: Enable SSH, HTTP and HTTPs for Docker Machines
+      GroupDescription: Enable connections for Docker Machines
       SecurityGroupIngress:
         - IpProtocol: TCP
           FromPort: 22
@@ -168,7 +168,11 @@ Resources:
             yum install -y python-pip
             pip install ec2instanceconnectcli
             $(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r ${AWS::Region} ${DockerGrandMaster} docker swarm join-token manager | grep docker)
-
+            yum install amazon-ecr-credential-helper
+            mkdir -p /home/ec2-user/.docker
+            cd /home/ec2-user/.docker
+            echo '{"credsStore": "ecr-login"}' > config.json
+            
   WorkerLaunchTemplate:
     Type: "AWS::EC2::LaunchTemplate"
     DependsOn:
@@ -198,7 +202,11 @@ Resources:
             yum install -y python-pip
             pip install ec2instanceconnectcli
             $(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r ${AWS::Region} ${DockerGrandMaster} docker swarm join-token worker | grep docker)
-    
+            yum install amazon-ecr-credential-helper
+            mkdir -p /home/ec2-user/.docker
+            cd /home/ec2-user/.docker
+            echo '{"credsStore": "ecr-login"}' > config.json  
+            
   WorkerInstance1:
     Type: "AWS::EC2::Instance"
     Properties:
