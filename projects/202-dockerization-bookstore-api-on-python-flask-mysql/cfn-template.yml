@@ -7,7 +7,7 @@ Resources:
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-        GroupDescription: Enables HTTP and SSH 
+        GroupDescription: Enables HTTP 
         SecurityGroupIngress:
             - IpProtocol: tcp
               FromPort: 80
@@ -37,7 +37,7 @@ Resources:
                 chmod +x /usr/local/bin/docker-compose
                 cd /home/ec2-user/
                 wget https://raw.githubusercontent.com/betulbeyazoglu/devops-workshop/master/projects/202-dockerization-bookstore-api-on-python-flask-mysql/docker-compose.yml
-                docker-compose up
+                docker-compose up 
 
 
 

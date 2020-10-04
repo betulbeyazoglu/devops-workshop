@@ -6,7 +6,11 @@ services:
     depends_on: 
       - database
     deploy: 
-      mode: global 
+      mode: global
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: start-first 
     ports:
       - "80:80"
     networks:
@@ -14,10 +18,10 @@ services:
   database:
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./mysql-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    configs:
+      - source: initialdb
+        target: /docker-entrypoint-initdb.d/init.sql
     image: mysql:5.7 
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: Bbeyaz
       MYSQL_USER: bb4it
@@ -30,6 +34,9 @@ networks:
     driver: overlay
 volumes:
   mysql-data:
+configs:
+  initialdb:
+    file: ./init.sql
  
 
 
