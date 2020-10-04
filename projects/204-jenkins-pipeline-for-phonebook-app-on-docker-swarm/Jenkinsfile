@@ -23,7 +23,7 @@ pipeline {
         stage ('Docker build'){
             steps {
                 echo ' Building Docker image '
-                sh 'docker build --force-rm -t "${ECR_REGISTRY}"/${REPO_NAME}:latest https://github.com/betulbeyazoglu/devops-workshop.git#:projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql'          
+                sh 'docker build --force-rm -t "${ECR_REGISTRY}"/${REPO_NAME}:latest .'
             }
         }
         stage ('ECR login') {
@@ -90,6 +90,7 @@ pipeline {
         post {
             always {
                 echo 'Deleting all local images'
+                sh ' docker image prune -af '
             }
             failure {
                 echo 'Delete image repository from ECR on failure'
